@@ -1,0 +1,6 @@
+s3ServerBucket:
+  Type: AWS::S3::Bucket
+  Properties: 
+    BucketName: web-bucket-jason-stuart-12322
+    WebsiteConfiguration: 
+      IndexDocument: index.html
