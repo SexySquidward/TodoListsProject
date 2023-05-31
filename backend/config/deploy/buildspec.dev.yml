@@ -8,7 +8,7 @@ phases:
       nodejs: 14
     commands:
       - echo Installing Serverless cli
-      - npm i -g serverless@2
+      - npm i -g serverless
       - cd backend
       - echo Installing npn dependencies of note service
       - npm install
