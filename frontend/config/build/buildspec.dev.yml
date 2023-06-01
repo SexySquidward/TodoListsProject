@@ -15,11 +15,7 @@ phases:
     commands:
       - echo Packaging the service
       - npm run build
-  post_build:
-    on-failure: ABORT 
-    commands:
-      - aws s3 sync .next s3://web-bucket-jason-stuart-12322
 artifacts:
   files:
     - '**/*'
-  base-directory: .next
+  base-directory: dist
