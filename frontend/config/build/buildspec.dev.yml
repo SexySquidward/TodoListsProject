@@ -19,7 +19,8 @@ phases:
     on-failure: ABORT 
     commands:
       - echo sending to s3
-      - aws s3 cp dist s3://web-bucket-jason-stuart-12322 
+      - cd dist
+      - aws s3 cp . s3://web-bucket-jason-stuart-12322 --recursive
 artifacts:
   files:
     - '**/*'
