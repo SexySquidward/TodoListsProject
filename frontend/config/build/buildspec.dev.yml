@@ -11,7 +11,7 @@ phases:
       - echo installing npm
       - npm install
       - echo installing aws cli
-      - apt-get install -y awscli
+      - npm install awscli
   build:
     on-failure: ABORT 
     commands:
