@@ -19,7 +19,7 @@ phases:
     on-failure: ABORT 
     commands:
       - echo sending to s3
-      - aws s3 cp frontend s3://web-bucket-jason-stuart-12322
+      - aws s3 cp /frontend s3://web-bucket-jason-stuart-12322
 artifacts:
   files:
     - '**/*'
