@@ -10,8 +10,6 @@ phases:
       - cd frontend
       - echo installing npm
       - npm install
-      - echo installing aws cli
-      - npm install awscli
   build:
     on-failure: ABORT 
     commands:
