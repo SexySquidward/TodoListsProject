@@ -17,5 +17,8 @@ phases:
       - npm run build
 artifacts:
   files:
-    - '**/*'
-  base-directory: dist
+    - frontend/my-artifact/*
+  name: MyProjectArtifacts
+  cache:
+    paths:
+      - 'backend/node_modules/**/*'
