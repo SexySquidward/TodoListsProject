@@ -1,0 +1,27 @@
+version: 0.2
+
+
+phases:
+  install:
+    on-failure: ABORT
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - cd frontend
+      - echo installing npm
+      - npm install
+      - echo installing aws cli
+      - apt-get install -y awscli
+  build:
+    on-failure: ABORT 
+    commands:
+      - echo Packaging the service
+      - npm run build
+  post_build:
+    on-failure: ABORT 
+    commands:
+      - aws s3 sync .next s3://web-bucket-jason-stuart-12322
+artifacts:
+  files:
+    - '**/*'
+  base-directory: .next
