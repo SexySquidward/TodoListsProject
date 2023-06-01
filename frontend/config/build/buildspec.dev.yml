@@ -15,10 +15,12 @@ phases:
     commands:
       - echo Packaging the service
       - npm run build
+  post_build:
+    on-failure: ABORT 
+    commands:
+      - echo sending to s3
+      - aws s3 cp frontend s3://web-bucket-jason-stuart-12322
 artifacts:
   files:
-    - frontend/my-artifact/*
-  name: MyProjectArtifacts
-  cache:
-    paths:
-      - 'backend/node_modules/**/*'
+    - '**/*'
+  base-directory: dist
