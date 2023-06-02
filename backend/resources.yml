@@ -4,6 +4,9 @@ s3ServerBucket:
     BucketName: web-bucket-jason-stuart-12322
     WebsiteConfiguration: 
       IndexDocument: index.html
+
+
+
 cognitoUserPool:
   Type: AWS::Cognito::UserPool
   Properties: 
@@ -11,6 +14,9 @@ cognitoUserPool:
       EmailSendingAccount: COGNITO_DEFAULT
     UsernameAttributes: 
       - email
+      - name
+      - birthdate
+      - nickname
     UserPoolName: "TodoList-dev"
 
 #Cognito Client
@@ -26,19 +32,7 @@ cognitoUserPoolClient:
 
 
 
-cognitoIdentityPoolRoleAttachment:
-  Type: AWS::Cognito::IdentityPoolRoleAttachment
-  Properties: 
-    IdentityPoolId: !Ref cognitoIdentityPool
-                
-cognitoIdentityPool:
-  Type: AWS::Cognito::IdentityPool
-  Properties: 
-    AllowUnauthenticatedIdentities: true
-    CognitoIdentityProviders: 
-      - ClientId: !Ref cognitoUserPoolClient
-        ProviderName: !GetAtt cognitoUserPool.ProviderName
-    IdentityPoolName: TodoList-devIdentityPool
+
 
 userPoolIdParam:
   Type: AWS::SSM::Parameter
@@ -53,13 +47,6 @@ userPoolClientParam:
     Name: /TodoList/dev/userPoolClient
     Type: String
     Value: !Ref cognitoUserPoolClient
-
-identityPoolIdParam:
-  Type: AWS::SSM::Parameter
-  Properties:
-    Name: /TodoList/dev/identityPoolId
-    Type: String
-    Value: !GetAtt cognitoIdentityPool.Arn
 
 S3BucketNameParam:
   Type: AWS::SSM::Parameter
