@@ -4,3 +4,85 @@ s3ServerBucket:
     BucketName: web-bucket-jason-stuart-12322
     WebsiteConfiguration: 
       IndexDocument: index.html
+cognitoUserPool:
+  Type: AWS::Cognito::UserPool
+  Properties: 
+    EmailConfiguration: 
+      EmailSendingAccount: COGNITO_DEFAULT
+    UsernameAttributes: 
+      - email
+    UserPoolName: "TodoList-dev"
+
+#Cognito Client
+cognitoUserPoolClient:
+  Type: AWS::Cognito::UserPoolClient
+  Properties: 
+    ClientName: Web
+    UserPoolId: !Ref cognitoUserPool
+
+# Cognito user pool groups
+cognitoAdminGroup:
+  Type: AWS::Cognito::UserPoolGroup
+  Properties: 
+    Description: "Admin users belong to this group"
+    GroupName: "Admin"
+    Precedence: 0
+    RoleArn: !GetAtt cognitoAdminIamRole.Arn
+    UserPoolId: !Ref cognitoUserPool
+
+
+
+# Cognito user pool groups
+cognitoCustomerGroup:
+  Type: AWS::Cognito::UserPoolGroup
+  Properties: 
+    Description: "Customer users belong to this group"
+    GroupName: "Customer"
+    Precedence: 1
+    RoleArn: !GetAtt cognitoCustomerIamRole.Arn
+    UserPoolId: !Ref cognitoUserPool
+
+
+cognitoIdentityPoolRoleAttachment:
+  Type: AWS::Cognito::IdentityPoolRoleAttachment
+  Properties: 
+    IdentityPoolId: !Ref cognitoIdentityPool
+    Roles: 
+      unauthenticated: !GetAtt cognitoUnauthIAMRole.Arn
+                
+cognitoIdentityPool:
+  Type: AWS::Cognito::IdentityPool
+  Properties: 
+    AllowUnauthenticatedIdentities: true
+    CognitoIdentityProviders: 
+      - ClientId: !Ref cognitoUserPoolClient
+        ProviderName: !GetAtt cognitoUserPool.ProviderName
+    IdentityPoolName: TodoList-devIdentityPool
+
+userPoolIdParam:
+  Type: AWS::SSM::Parameter
+  Properties:
+    Name: /TodoList/dev/userPoolId
+    Type: String
+    Value: !GetAtt cognitoUserPool.Arn
+
+userPoolClientParam:
+  Type: AWS::SSM::Parameter
+  Properties:
+    Name: /TodoList/dev/userPoolClient
+    Type: String
+    Value: !Ref cognitoUserPoolClient
+
+identityPoolIdParam:
+  Type: AWS::SSM::Parameter
+  Properties:
+    Name: /TodoList/dev/identityPoolId
+    Type: String
+    Value: !GetAtt cognitoIdentityPool.Arn
+
+S3BucketNameParam:
+  Type: AWS::SSM::Parameter
+  Properties:
+    Name: /TodoList/dev/S3Name
+    Type: String
+    Value: !Ref  s3ServerBucket
