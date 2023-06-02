@@ -2,7 +2,7 @@ import { Amplify, Auth } from 'aws-amplify';
 import * as ssm from '@aws-cdk/aws-ssm';
 const userPoolId = ssm.StringParameter.valueFromLookup(this as any, '/TodoList/dev/userPoolId');
 const userPoolWebClientId = ssm.StringParameter.valueFromLookup(this as any, '/TodoList/dev/userPoolClient');
-const identityPoolId = ssm.StringParameter.valueFromLookup(this as any, '/TodoList/dev/identityPoolId');
+//const identityPoolId = ssm.StringParameter.valueFromLookup(this as any, '/TodoList/dev/identityPoolId');
 Amplify.configure({
     Auth: {
   
