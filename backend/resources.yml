@@ -14,11 +14,30 @@ cognitoUserPool:
       EmailSendingAccount: COGNITO_DEFAULT
     UsernameAttributes: 
       - email
-      - name
-      - birthdate
-      - nickname
     UserPoolName: "TodoList-dev"
+NameAttribute:
+    Type: AWS::Cognito::UserPoolUserAttribute
+    Properties:
+      UserPoolId: !Ref cognitoUserPool
+      Name: name
+      AttributeDataType: String
+      Mutable: true
 
+BirthdayAttribute:
+    Type: AWS::Cognito::UserPoolUserAttribute
+    Properties:
+      UserPoolId: !Ref cognitoUserPool
+      Name: birthday
+      AttributeDataType: String
+      Mutable: true
+
+NicknameAttribute:
+    Type: AWS::Cognito::UserPoolUserAttribute
+    Properties:
+      UserPoolId: !Ref cognitoUserPool
+      Name: nickname
+      AttributeDataType: String
+      Mutable: true
 #Cognito Client
 cognitoUserPoolClient:
   Type: AWS::Cognito::UserPoolClient
