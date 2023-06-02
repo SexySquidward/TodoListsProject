@@ -20,27 +20,10 @@ cognitoUserPoolClient:
     ClientName: Web
     UserPoolId: !Ref cognitoUserPool
 
-# Cognito user pool groups
-cognitoAdminGroup:
-  Type: AWS::Cognito::UserPoolGroup
-  Properties: 
-    Description: "Admin users belong to this group"
-    GroupName: "Admin"
-    Precedence: 0
-    RoleArn: !GetAtt cognitoAdminIamRole.Arn
-    UserPoolId: !Ref cognitoUserPool
 
 
 
-# Cognito user pool groups
-cognitoCustomerGroup:
-  Type: AWS::Cognito::UserPoolGroup
-  Properties: 
-    Description: "Customer users belong to this group"
-    GroupName: "Customer"
-    Precedence: 1
-    RoleArn: !GetAtt cognitoCustomerIamRole.Arn
-    UserPoolId: !Ref cognitoUserPool
+
 
 
 cognitoIdentityPoolRoleAttachment:
