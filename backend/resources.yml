@@ -10,34 +10,22 @@ s3ServerBucket:
 cognitoUserPool:
   Type: AWS::Cognito::UserPool
   Properties: 
+    Schema:
+          - Name: name
+            AttributeDataType: String
+            Mutable: true
+          - Name: birthday
+            AttributeDataType: String
+            Mutable: true
+          - Name: nickname
+            AttributeDataType: String
+            Mutable: true
     EmailConfiguration: 
       EmailSendingAccount: COGNITO_DEFAULT
     UsernameAttributes: 
       - email
     UserPoolName: "TodoList-dev"
-NameAttribute:
-    Type: AWS::Cognito::UserPoolUserAttribute
-    Properties:
-      UserPoolId: !Ref cognitoUserPool
-      Name: name
-      AttributeDataType: String
-      Mutable: true
 
-BirthdayAttribute:
-    Type: AWS::Cognito::UserPoolUserAttribute
-    Properties:
-      UserPoolId: !Ref cognitoUserPool
-      Name: birthday
-      AttributeDataType: String
-      Mutable: true
-
-NicknameAttribute:
-    Type: AWS::Cognito::UserPoolUserAttribute
-    Properties:
-      UserPoolId: !Ref cognitoUserPool
-      Name: nickname
-      AttributeDataType: String
-      Mutable: true
 #Cognito Client
 cognitoUserPoolClient:
   Type: AWS::Cognito::UserPoolClient
