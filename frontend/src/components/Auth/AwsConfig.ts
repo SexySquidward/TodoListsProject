@@ -1,15 +1,15 @@
 import { Amplify, Auth } from 'aws-amplify';
-import { SSM } from 'aws-sdk';
-//import AWS from './config/aws'
+//import { SSM } from 'aws-sdk';
+import AWS from './config/aws'
 
 // Create an instance of the SSM client
-const ssm = new SSM({region: 'ap-southeast-2'});
+const ssm = new AWS.SSM({region: 'ap-southeast-2'});
 const userPoolIdParam = '/TodoList/dev/userPoolId';
 const userPoolWebClientIdParam = '/TodoList/dev/userPoolClient';
 
 async function getParameter(parameterName: string): Promise<string> {
   try {
-    const request: SSM.GetParameterRequest = {
+    const request: AWS.SSM.GetParameterRequest = {
       Name: parameterName,
       WithDecryption: true
     };

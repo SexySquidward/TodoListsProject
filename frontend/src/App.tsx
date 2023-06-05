@@ -9,7 +9,7 @@ import {
 import '@aws-amplify/ui-react/styles.css';
 
 interface Props extends WithAuthenticatorProps {
-  isPassedToWithAuthenticator:  any;
+  isPassedToWithAuthenticator:  unknown;
 }
 
 function App({ isPassedToWithAuthenticator, signOut, user }: Props) {
@@ -25,6 +25,7 @@ function App({ isPassedToWithAuthenticator, signOut, user }: Props) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default withAuthenticator(App);
 
 export async function getStaticProps() {
