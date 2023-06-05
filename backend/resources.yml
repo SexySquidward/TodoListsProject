@@ -20,10 +20,12 @@ cognitoUserPool:
           - Name: nickname
             AttributeDataType: String
             Mutable: true
-    EmailConfiguration: 
-      EmailSendingAccount: COGNITO_DEFAULT
-    UsernameAttributes: 
-      - email
+    AutoVerifiedAttributes:
+          - email
+    UsernameAttributes:
+          - email
+    EmailVerificationMessage: "Your verification code is {####}"
+    EmailVerificationSubject: "Verify your email"
     UserPoolName: "TodoList-dev"
 
 #Cognito Client
@@ -46,7 +48,7 @@ userPoolIdParam:
   Properties:
     Name: /TodoList/dev/userPoolId
     Type: String
-    Value: !GetAtt cognitoUserPool.Arn
+    Value: !Ref  cognitoUserPool
 
 userPoolClientParam:
   Type: AWS::SSM::Parameter

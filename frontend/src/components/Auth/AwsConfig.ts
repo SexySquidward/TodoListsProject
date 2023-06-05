@@ -1,30 +1,54 @@
 import { Amplify, Auth } from 'aws-amplify';
-import * as ssm from '@aws-cdk/aws-ssm';
-const userPoolId = ssm.StringParameter.valueFromLookup(this as any, '/TodoList/dev/userPoolId');
-const userPoolWebClientId = ssm.StringParameter.valueFromLookup(this as any, '/TodoList/dev/userPoolClient');
-//const identityPoolId = ssm.StringParameter.valueFromLookup(this as any, '/TodoList/dev/identityPoolId');
-Amplify.configure({
-    Auth: {
-  
-      // REQUIRED - Amazon Cognito Region
-      region: 'ap-southeast-2',
-  
-      // OPTIONAL - Amazon Cognito User Pool ID
-      userPoolId: userPoolId,
-  
-     // identityPoolId: identityPoolId,
-  
-      // OPTIONAL - Amazon Cognito Web Client ID (26-char alphanumeric string)
-      userPoolWebClientId: userPoolWebClientId,
-  
-      // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
-      mandatorySignIn: true,
-  
-  
-     
-      
-    }
-  });
-const currentConfig = Auth.configure()
+import { SSM } from 'aws-sdk';
+//import AWS from './config/aws'
 
-export default currentConfig
+// Create an instance of the SSM client
+const ssm = new SSM({region: 'ap-southeast-2'});
+const userPoolIdParam = '/TodoList/dev/userPoolId';
+const userPoolWebClientIdParam = '/TodoList/dev/userPoolClient';
+
+async function getParameter(parameterName: string): Promise<string> {
+  try {
+    const request: SSM.GetParameterRequest = {
+      Name: parameterName,
+      WithDecryption: true
+    };
+
+    const response = await ssm.getParameter(request).promise();
+
+    return response.Parameter?.Value || '';
+  } catch (error) {
+    console.error('Failed to retrieve the parameter:', error);
+    throw error;
+  }
+}
+
+async function configureAmplify() {
+  try {
+    
+    const userPoolId = await getParameter(userPoolIdParam);
+    const userPoolWebClientId = await getParameter(userPoolWebClientIdParam);
+    Amplify.configure({
+      Auth: {
+        region: 'ap-southeast-2',
+        userPoolId: userPoolId,
+        userPoolWebClientId: userPoolWebClientId,
+        mandatorySignIn: true,
+      }
+    });
+
+    const currentConfig = Auth.configure();
+    
+    return currentConfig;
+  } catch (error) {
+    console.error('Failed to configure Amplify:', error);
+    throw error;
+  }
+}
+
+export default async function initializeAmplify() {
+  const currentConfig = await configureAmplify();
+  
+  // Perform any additional initialization or setup here
+  return currentConfig;
+}
