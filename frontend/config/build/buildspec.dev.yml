@@ -16,8 +16,8 @@ phases:
       - PARAMETER_PATH_COGNITO_Client_ID="/TodoList/dev/userPoolClient"
       - PARAMETER_VALUE_COGNITO_ID=$(aws ssm get-parameter --name "$PARAMETER_PATH_COGNITO_ID" --query "Parameter.Value" --output text)
       - PARAMETER_VALUE_COGNITO_Client_ID=$(aws ssm get-parameter --name "$PARAMETER_PATH_COGNITO_Client_ID" --query "Parameter.Value" --output text)
-      - echo "VITE_AWS_USERPOOL_ID=$PARAMETER_PATH_COGNITO_ID" > .env
-      - echo "VITE_AWS_USERPOOL_WEBCLIENT_ID=$PARAMETER_PATH_COGNITO_Client_ID" >> .env
+      - echo "VITE_AWS_USERPOOL_ID=$PARAMETER_VALUE_COGNITO_ID" > .env
+      - echo "VITE_AWS_USERPOOL_WEBCLIENT_ID=$PARAMETER_VALUE_COGNITO_Client_ID" >> .env
       - echo "VITE_AWS_REGION=$PARAMETER_REGION" >> .env
   build:
     on-failure: ABORT 
